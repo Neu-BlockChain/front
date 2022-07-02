@@ -8,13 +8,13 @@ class Agent {
   private resolveCallback: any;
   public owner: Principal | undefined;
   async getAgent() {
-    console.log(String(await authClient.getIdentity().getPrincipal()));
+    // console.log(String(await authClient.getIdentity().getPrincipal()));
     return new HttpAgent({
       identity: await authClient.getIdentity(),
     });
   }
   //no  identity
-  private async getNoIdentityAgent() {
+  async getNoIdentityAgent() {
     return new HttpAgent();
   }
 
@@ -35,6 +35,18 @@ class Agent {
   async getIdentity(): Promise<any> {
     return await authClient.getIdentity();
   }
+
+  async noIdentityActor(
+    IdlFactory,
+    canisterId: string
+  ): Promise<ActorSubclass> {
+    const agent = await this.getNoIdentityAgent();
+    return Actor.createActor(IdlFactory, {
+      agent,
+      canisterId,
+    });
+  }
+  
   async createActor(idlFactory: any, canisterId: string | any): Promise<any> {
     const agent = await this.getAgent();
     return Actor.createActor(idlFactory, {

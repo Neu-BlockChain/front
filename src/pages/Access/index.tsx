@@ -1,83 +1,88 @@
+import MarketApi from '@/api/Market';
+import { Principal } from '@dfinity/principal';
 import { PageContainer } from '@ant-design/pro-components';
-import { Access, useAccess } from '@umijs/max';
+// import { Access, useAccess } from '@umijs/max';
 import { Button } from 'antd';
 import { Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 
 interface DataType {
-  name: string;
-  age: number;
-  address: string;
-  tags: string[];
+  buyer: string;
+  seller: string;
+  sellOrderIndex: string;
+  buyOrderIndex: string;
+  amount: string;
+  price: string;
+  sum: string;
+  dealTime: string;
 }
 
 const columns: ColumnsType<DataType> = [
   {
-    title: 'Name',
-    dataIndex: 'name',
-    render: text => <a>{text}</a>,
+    title: '买方',
+    dataIndex: 'buyer',
   },
   {
-    title: 'Age',
-    dataIndex: 'age',
+    title: '卖方',
+    dataIndex: 'seller',
   },
   {
-    title: 'Address',
-    dataIndex: 'address',
+    title: '买方订单ID',
+    dataIndex: 'buyOrderIndex',
   },
   {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: (_, { tags }) => (
-      <>
-        {tags.map(tag => {
-          let color = tag.length > 5 ? 'geekblue' : 'green';
-          if (tag === 'loser') {
-            color = 'volcano';
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
+    title: '卖方订单ID',
+    dataIndex: 'sellOrderIndex',
   },
   {
-    title: 'Action',
-    key: 'action',
-    render: (_, record) => (
-      <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
-      </Space>
-    ),
+    title: '数量',
+    dataIndex: 'amount',
   },
+  {
+    title: '单价',
+    dataIndex: 'price',
+  },
+  {
+    title: '总价',
+    dataIndex: 'sum',
+  },
+  {
+    title: '成交时间',
+    dataIndex: 'dealTime',
+  },
+  
 ];
 
-const data: DataType[] = [
-  {
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-];
+// const data: DataType[] = [
+//   {
+//     buyer: 'ss',
+//     seller: 'dd',
+//     sellOrderIndex: '123',
+//     buyOrderIndex: '345',
+//     amount: '3',
+//     price: '4',
+//     sum: '12',
+//     dealTime: '1223',
+//   },
+// ];
+console.log(11111);
+const data : any= await MarketApi.GetDeals();
+console.log(11111);
+console.log(data);
 
-const App: React.FC = () => <Table columns={columns} dataSource={data} />;
+const App: React.FC<unknown> = () => {
+  return (
+    <PageContainer
+      header={{
+        title: '交易记录 示例',
+      }}
+    >
+      <Table columns={columns} dataSource={data} />
+
+    </PageContainer>
+    
+    );
+  
+};
 
 export default App;

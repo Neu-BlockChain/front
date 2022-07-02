@@ -1,15 +1,19 @@
 import { GetAgent } from '@/utils/getAgent';
-import { idlFactory as marketIDL } from '../';
+import { idlFactory as marketIDL } from '@/did/market.did';
 
 
 class Market {
-    canisterId = 'ngtm2-tyaaa-aaaan-qahpa-cai';
+    canisterId :string= 'ngtm2-tyaaa-aaaan-qahpa-cai';
 
     async getActor() {
         return await GetAgent.createActor(marketIDL, this.canisterId);
     }
 
-    async getCanisters() {
+    async getNoIdentityActor() {
+        return await GetAgent.noIdentityActor(marketIDL, this.canisterId);
+    }
+
+    async getCanisters(): Promise<any> {
         const res = await (await this.getActor()).getCanisters();
         console.log('canisters', res);
         return res;
@@ -23,5 +27,4 @@ class Market {
 }
 
 const MarketApi = new Market();
-console.log(MarketApi);
 export default MarketApi

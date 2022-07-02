@@ -1,3 +1,27 @@
 {
-  "extends": "./src/.umi/tsconfig.json"
+  "include": ["src"],
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "allowJs": true,
+    "checkJs": false,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react-jsx",
+    "lib": ["ES2019", "DOM", "esnext"],
+    "module": "esnext",
+    "strict": true,
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["./*"],
+    },
+    "outDir": "./",
+    "target": "es2018",
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true
+  },
+  "exclude": ["node_modules", "dist"]
 }
