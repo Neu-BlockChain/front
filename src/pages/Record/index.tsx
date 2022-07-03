@@ -84,7 +84,7 @@ const Record: React.FC<unknown> = () => {
         title: '交易记录 示例',
       }}
     >
-      <Table columns={columns} dataSource={data} />
+      <Table columns={columns} dataSource={data} rowKey='buyOrderIndex'/>
 
     </PageContainer>
     

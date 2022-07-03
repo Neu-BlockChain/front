@@ -84,7 +84,7 @@ const Buy: React.FC<unknown> = () => {
         title: '买方挂单',
       }}
     >
-      <Table columns={columns} dataSource={data} />
+      <Table columns={columns} dataSource={data} rowKey='index'/>
 
     </PageContainer>
     
