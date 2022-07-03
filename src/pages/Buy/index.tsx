@@ -7,57 +7,65 @@ import { Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 
 interface DataType {
-  buyer: string;
-  seller: string;
-  sellOrderIndex: string;
-  buyOrderIndex: string;
+  // buyer: Principal;
+  // seller: Principal;
+  index: any;
   amount: string;
+  delta: string;
   price: string;
-  sum: string;
-  dealTime: string;
+  status: string;
+  creatAt: string;
 }
 
 const columns: ColumnsType<DataType> = [
+  // {
+  //   title: '买方',
+  //   dataIndex: 'buyer',
+  //   key:'buyer',
+  // },
+  // {
+  //   title: '卖方',
+  //   dataIndex: 'seller',
+  //   key:'seller',
+  // },
   {
-    title: '买方',
-    dataIndex: 'buyer',
-  },
-  {
-    title: '卖方',
-    dataIndex: 'seller',
-  },
-  {
-    title: '买方订单ID',
-    dataIndex: 'buyOrderIndex',
-  },
-  {
-    title: '卖方订单ID',
-    dataIndex: 'sellOrderIndex',
+    title: '挂单ID',
+    dataIndex: 'index',
+    key:'index',
   },
   {
     title: '数量',
     dataIndex: 'amount',
+    key:'amount',
+  },
+  {
+    title: '最大差价',
+    dataIndex: 'delta',
+    key:'delta',
   },
   {
     title: '单价',
     dataIndex: 'price',
+    key:'price',
   },
   {
-    title: '总价',
-    dataIndex: 'sum',
+    title: '状态',
+    dataIndex: 'status',
+    key:'status',
   },
   {
-    title: '成交时间',
-    dataIndex: 'dealTime',
+    title: 'createAt',
+    dataIndex: 'createAt',
+    key:'createAt',
   },
   
 ];
 
 // const data: DataType[] = [
 //   {
-//     buyer: 'ss',
-//     seller: 'dd',
-//     sellOrderIndex: '123',
+//     // buyer: 'ss',
+//     // seller: 'dd',
+//     sellOrderIndex: 123,
 //     buyOrderIndex: '345',
 //     amount: '3',
 //     price: '4',
@@ -66,15 +74,14 @@ const columns: ColumnsType<DataType> = [
 //   },
 // ];
 console.log(11111);
-const data : any= await MarketApi.GetDeals();
-console.log(11111);
+const data : DataType[]= await MarketApi.GetBuyList();
 console.log(data);
 
-const App: React.FC<unknown> = () => {
+const Buy: React.FC<unknown> = () => {
   return (
     <PageContainer
       header={{
-        title: '交易记录 示例',
+        title: '买方挂单',
       }}
     >
       <Table columns={columns} dataSource={data} />
@@ -85,4 +92,4 @@ const App: React.FC<unknown> = () => {
   
 };
 
-export default App;
+export default Buy;

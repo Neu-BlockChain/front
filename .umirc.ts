@@ -20,16 +20,27 @@ export default defineConfig({
       component: './Home',
     },
     {
-      name: '权限演示',
-      path: '/access',
-      component: './Access',
+      name: '交易记录',
+      path: '/record',
+      component: './Record',
     },
     {
         name: ' CRUD 示例',
         path: '/table',
         component: './Table',
     },
+    {
+      name: ' 买方挂单',
+      path: '/buy',
+      component: './Buy',
+    },
   ],
+  proxy: {
+    "/api": {
+      target: "https://ic0.app",
+      changeOrigin: true,
+    },
+  },
   npmClient: 'npm',
 });
 

@@ -24,6 +24,10 @@ class Market {
         return await (await this.getActor()).getDeals();
     }
 
+    async GetBuyList() {
+        return await (await this.getActor()).getBuyList();
+    }
+
 }
 
 const MarketApi = new Market();
