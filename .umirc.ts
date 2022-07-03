@@ -34,6 +34,11 @@ export default defineConfig({
       path: '/buy',
       component: './Buy',
     },
+    {
+      name: ' 卖方挂单',
+      path: '/sell',
+      component: './Sell',
+    },
   ],
   proxy: {
     "/api": {

@@ -5,18 +5,16 @@ import { PageContainer } from '@ant-design/pro-components';
 import { Button } from 'antd';
 import { Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
-import React,{Component} from 'react';
-import { Components } from 'antd/lib/date-picker/generatePicker';
 
 interface DataType {
   // buyer: Principal;
   // seller: Principal;
-  sellOrderIndex: Number;
-  buyOrderIndex: Number;
-  amount: Number;
-  price: Number;
-  sum: Number;
-  dealTime: Number;
+  index: number;
+  amount: number;
+  delta: number;
+  price: number;
+  status: number;
+  createAt: number;
 }
 
 const columns: ColumnsType<DataType> = [
@@ -31,14 +29,9 @@ const columns: ColumnsType<DataType> = [
   //   key:'seller',
   // },
   {
-    title: '买方订单ID',
-    dataIndex: 'buyOrderIndex',
-    key:'buyOrderIndex',
-  },
-  {
-    title: '卖方订单ID',
-    dataIndex: 'sellOrderIndex',
-    key:'sellOrderIndex',
+    title: '挂单ID',
+    dataIndex: 'index',
+    key:'index',
   },
   {
     title: '数量',
@@ -46,19 +39,24 @@ const columns: ColumnsType<DataType> = [
     key:'amount',
   },
   {
+    title: '最大差价',
+    dataIndex: 'delta',
+    key:'delta',
+  },
+  {
     title: '单价',
     dataIndex: 'price',
     key:'price',
   },
   {
-    title: '总价',
-    dataIndex: 'sum',
-    key:'sum',
+    title: '状态',
+    dataIndex: 'status',
+    key:'status',
   },
   {
-    title: '成交时间',
-    dataIndex: 'dealTime',
-    key:'dealTime',
+    title: 'createAt',
+    dataIndex: 'createAt',
+    key:'createAt',
   },
   
 ];
@@ -75,32 +73,30 @@ const columns: ColumnsType<DataType> = [
 //     dealTime: '1223',
 //   },
 // ];
-
-const data : DataType[]= await MarketApi.GetDeals();
+console.log(11111);
+const data : DataType[]= await MarketApi.GetSellList();
 console.log(data);
-
     //处理数组
     const elements: any=[];
     data.forEach((item)=>{
-      const trans: DataType = {sellOrderIndex:Number(item.sellOrderIndex),
-        buyOrderIndex:Number(item.buyOrderIndex),
+      const trans: DataType = {index:Number(item.index),
         amount:Number(item.amount),
         price:Number(item.price),
-        sum:Number(item.sum),
-        dealTime:Number(item.dealTime)
+        status:Number(item.status),
+        delta:Number(item.delta),
+        createAt:Number(item.createAt),
       };
       elements.push(trans)
     });
 
-console.log(elements);
-const Record: React.FC<unknown> = () => {
+const Sell: React.FC<unknown> = () => {
   return (
     <PageContainer
       header={{
-        title: '交易记录 示例',
+        title: '卖方挂单',
       }}
     >
-      <Table columns={columns} dataSource={elements} rowKey='buyOrderIndex'/>
+      <Table columns={columns} dataSource={elements} rowKey='index'/>
 
     </PageContainer>
     
@@ -108,5 +104,4 @@ const Record: React.FC<unknown> = () => {
   
 };
 
-export default Record;
-
+export default Sell;
