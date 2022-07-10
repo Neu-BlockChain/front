@@ -30,12 +30,22 @@ export default defineConfig({
         component: './Table',
     },
     {
-      name: ' 买方挂单',
+      name: ' 个人买方挂单',
+      path: '/onesBuy',
+      component: './OnesBuy',
+    },
+    {
+      name: ' 个人卖方挂单',
+      path: '/onesSell',
+      component: './OnesSell',
+    },
+    {
+      name: ' 链上买方挂单',
       path: '/buy',
       component: './Buy',
     },
     {
-      name: ' 卖方挂单',
+      name: ' 链上卖方挂单',
       path: '/sell',
       component: './Sell',
     },

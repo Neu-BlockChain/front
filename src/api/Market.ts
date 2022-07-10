@@ -1,6 +1,12 @@
 import { GetAgent } from '@/utils/getAgent';
 import { idlFactory as marketIDL } from '@/did/market.did';
+import { Principal } from "@dfinity/principal";
 
+interface ListArgs {
+    amount: number;
+    price: number;
+    delta: number;
+}
 
 class Market {
     canisterId :string= 'ngtm2-tyaaa-aaaan-qahpa-cai';
@@ -30,6 +36,14 @@ class Market {
 
     async GetSellList() {
         return await (await this.getActor()).getSellList();
+    }
+
+    async listSell(args: ListArgs) {
+        return await (await this.getActor()).listSell(args);
+    }
+
+    async getSomebodySellList(principal: Principal) {
+        return await (await this.getActor()).getSomebodySellList(principal);
     }
 
 }

@@ -73,7 +73,7 @@ const columns: ColumnsType<DataType> = [
 //     dealTime: '1223',
 //   },
 // ];
-console.log(11111);
+
 const data : DataType[]= await MarketApi.GetSellList();
 console.log(data);
     //处理数组
