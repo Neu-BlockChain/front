@@ -49,6 +49,17 @@ export default defineConfig({
       path: '/sell',
       component: './Sell',
     },
+    {
+      name: ' 交易图表',
+      path: '/chart',
+      component: './Chart',
+    },
+    {
+      name: ' 政府分发',
+      path: '/govern',
+      component: './Govern',
+    },
+    
   ],
   proxy: {
     "/api": {

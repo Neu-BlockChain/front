@@ -5,6 +5,13 @@ import { PageContainer } from '@ant-design/pro-components';
 import { Button } from 'antd';
 import { Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
+import { useState } from 'react';
+
+// interface Status{
+//   open: number;
+//   done: number;
+//   cancel: number;
+// }
 
 interface DataType {
   // buyer: Principal;
@@ -13,7 +20,7 @@ interface DataType {
   amount: number;
   delta: number;
   price: number;
-  status: number;
+  // status: Status;
   createAt: number;
 }
 
@@ -48,11 +55,11 @@ const columns: ColumnsType<DataType> = [
     dataIndex: 'price',
     key:'price',
   },
-  {
-    title: '状态',
-    dataIndex: 'status',
-    key:'status',
-  },
+  // {
+  //   title: '状态',
+  //   dataIndex: 'status',
+  //   key:'status',
+  // },
   {
     title: 'createAt',
     dataIndex: 'createAt',
@@ -74,29 +81,38 @@ const columns: ColumnsType<DataType> = [
 //   },
 // ];
 
-const data : DataType[]= await MarketApi.GetSellList();
-console.log(data);
+
     //处理数组
-    const elements: any=[];
+
+
+const Sell: React.FC<unknown> = () => {
+
+  const [dataSource,setDataSource]=useState<Array<DataType>>([]);
+
+  const loadData = async()=>{
+    const data : DataType[]= await MarketApi.GetSellList();
+    const elements: DataType[]= [];
+    //处理数组
     data.forEach((item)=>{
       const trans: DataType = {index:Number(item.index),
         amount:Number(item.amount),
         price:Number(item.price),
-        status:Number(item.status),
         delta:Number(item.delta),
         createAt:Number(item.createAt),
       };
-      elements.push(trans)
+      elements.push(trans);
+      
     });
-
-const Sell: React.FC<unknown> = () => {
+    setDataSource(elements);
+  }
+  loadData();
   return (
     <PageContainer
       header={{
         title: '卖方挂单',
       }}
     >
-      <Table columns={columns} dataSource={elements} rowKey='index'/>
+      <Table columns={columns} dataSource={dataSource} rowKey='index'/>
 
     </PageContainer>
     

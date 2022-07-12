@@ -60,17 +60,21 @@ import UpdateForm from './components/UpdateForm';
       amount: number;
       delta: number;
       price: number;
-      status: number;
+      // status: number;
       createAt: number;
     }
 
     const state = {
-      dataSource: [] as DataType[],
+      // dataSource: [] as DataType[],
       updateData: [] as UpdateArgs[],
     };
 
+    
+
 
 const OnesSell: React.FC<unknown> = () => {
+    const [dataSource,setDataSource] = useState<Array<DataType>>([]);
+  
     // 删除挂单
     const handleDelete = async(id)=>{
       
@@ -93,18 +97,19 @@ const OnesSell: React.FC<unknown> = () => {
 const loadData = async()=>{
   const principalId = await window.ic.plug.agent.getPrincipal();
   const data = await MarketApi.getSomebodySellList(principalId);
-  state.dataSource = [];
+  const elements: DataType[]= [];
   //处理数组
   data.forEach((item)=>{
     const trans: DataType = {index:Number(item.index),
       amount:Number(item.amount),
       price:Number(item.price),
-      status:Number(item.status),
+      // status:Number(item.status),
       delta:Number(item.delta),
       createAt:Number(item.createAt),
     };
-    state.dataSource.push(trans);
+    elements.push(trans);
   });
+  setDataSource(elements);
 }
 
 //获取要修改的数据
@@ -169,11 +174,11 @@ const columns: ProDescriptionsItemProps[] = [
     dataIndex: 'price',
     key:'price',
   },
-  {
-    title: '状态',
-    dataIndex: 'status',
-    key:'status',
-  },
+  // {
+  //   title: '状态',
+  //   dataIndex: 'status',
+  //   key:'status',
+  // },
   {
     title: 'createAt',
     dataIndex: 'createAt',
@@ -218,7 +223,7 @@ const columns: ProDescriptionsItemProps[] = [
         title: '卖方挂单',
       }}
     >
-      <Table columns={columns} dataSource={state.dataSource} rowKey='index'/>
+      <Table columns={columns} dataSource={dataSource} rowKey='index'/>
 
       <Button
             key="1"

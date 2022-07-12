@@ -13,7 +13,7 @@ const Guide: React.FC<Props> = (props) => {
     <Layout>
       <Row>
         <Typography.Title level={3} className={styles.title}>
-          欢迎使用 <strong>{name}</strong> ！
+          政府为公司发放非碳排放额度
         </Typography.Title>
       </Row>
     </Layout>
