@@ -56,7 +56,7 @@ const HomePage: React.FC = () => {
   });
 
   const principalId = await window.ic.plug.agent.getPrincipal();
-
+  console.log(`Plug's user principal Id is ${principalId}`);
 
 })()
 
