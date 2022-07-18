@@ -45,7 +45,7 @@ interface UpdateArgs{
       });
     const Result = IDL.Variant({ 'ok' : IDL.Bool, 'err' : Error });
     return IDL.Service({
-        'updateSell' : IDL.Func([UpdateArgs], [Result], []),
+        'updateBuy' : IDL.Func([UpdateArgs], [Result], []),
     });
   };
 
@@ -75,7 +75,7 @@ const UpdateForm: React.FC<PropsWithChildren<UpdateFormProps>> = (props) => {
         newDelta: Number(values.newDelta)
       };
     console.log(arg);
-  const msg: result = await NNSUiActor.updateSell(arg);
+  const msg: result = await NNSUiActor.updateBuy(arg);
   props.onCancel();
   if(msg.ok!=null){
     message.info('修改成功');

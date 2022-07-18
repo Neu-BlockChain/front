@@ -1,23 +1,21 @@
 import { Modal, Form ,Input, Upload, Button, message} from 'antd';
 import React, { PropsWithChildren } from 'react';
 import MarketApi from '@/api/Market';
-import { Principal } from '@dfinity/principal';
 
 interface CreateFormProps {
   modalVisible: boolean;
   onCancel: () => void;
 }
 
-
-
-interface result{
-  Ok: number;
-  Err: Error;
+interface ListArgs {
+  amount: number;
+  price: number;
+  delta: number;
 }
 
 
   // NNS Canister Id as an example
-  const nnsCanisterId = 'epr6w-qyaaa-aaaag-qalia-cai'
+  const nnsCanisterId = 'ngtm2-tyaaa-aaaan-qahpa-cai'
   const whitelist = [nnsCanisterId];
 
   // Initialise Agent, expects no return value
@@ -29,22 +27,14 @@ interface result{
   // for the NNS Canister UI
   // Check the `plug authentication - nns` for more
   const nnsPartialInterfaceFactory = ({ IDL }) => {
-    const TxReceipt = IDL.Variant({
-      'Ok' : IDL.Nat,
-      'Err' : IDL.Variant({
-        'InsufficientAllowance' : IDL.Null,
-        'InsufficientBalance' : IDL.Null,
-        'ErrorOperationStyle' : IDL.Null,
-        'Unauthorized' : IDL.Null,
-        'LedgerTrap' : IDL.Null,
-        'ErrorTo' : IDL.Null,
-        'Other' : IDL.Text,
-        'BlockUsed' : IDL.Null,
-        'AmountTooSmall' : IDL.Null,
-      }),
+    const Result_1 = IDL.Variant({ 'ok' : IDL.Nat, 'err' : Error });
+    const ListArgs = IDL.Record({
+      'price' : IDL.Nat,
+      'amount' : IDL.Nat,
+      'delta' : IDL.Nat,
     });
     return IDL.Service({
-      'mint' : IDL.Func([IDL.Principal, IDL.Nat], [TxReceipt], []),
+      'listBuy' : IDL.Func([ListArgs], [Result_1], []),
     });
   };
 
@@ -60,26 +50,35 @@ interface result{
 const CreateForm: React.FC<PropsWithChildren<CreateFormProps>> = (props) => {
   const { modalVisible, onCancel } = props;
   const onFinish = async (values) =>{
-    const msg: result = await NNSUiActor.mint(Principal.from(values.principal),Number(values.amount));
-    
+    const arg: ListArgs= {
+          amount: Number(values.amount),
+          price: Number(values.price),
+          delta: Number(values.delta)
+          
+    };
+    const msg: result = await NNSUiActor.listBuy(arg);
     props.onCancel();
-    if(msg.Ok!=null){
-      message.info('发放成功');
+    if(msg.ok!=null){
+      message.info('添加成功');
     }else{
-      console.error(msg.Err);
+      console.error(msg.err);
     }
     
     console.log(msg);
     // const msg = await MarketApi.listSell(arg);
     
   };
+
   const onFinishFailed = () =>{};
 
-
+  interface result{
+    ok: number;
+    err: Error;
+  }
 
   return (
     <Modal
-      title="发放限额"
+      title="添加挂单"
       width={420}
       visible={modalVisible}
       onCancel={() => onCancel()}
@@ -89,14 +88,17 @@ const CreateForm: React.FC<PropsWithChildren<CreateFormProps>> = (props) => {
       // cancelText="取消"
     >
       <Form onFinish={onFinish} onFinishFailed={onFinishFailed}>
-        <Form.Item label="principal" name="principal" rules={[{required :true , message:"请输入principal"}]}>
+        <Form.Item label="amount" name="amount" rules={[{required :true , message:"请输入数量"}]}>
           <Input />
         </Form.Item>
-        <Form.Item label="amount" name="amount" rules={[{required :true , message:"请输入amount"}]}>
+        <Form.Item label="price" name="price" rules={[{required :true , message:"请输入价格"}]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="delta" name="delta" rules={[{required :true , message:"请输入差价"}]}>
           <Input />
         </Form.Item>
         <Form.Item>
-          <Button type='primary' htmlType='submit' >发放</Button>
+          <Button type='primary' htmlType='submit' >添加</Button>
         </Form.Item>
       </Form>
     </Modal>

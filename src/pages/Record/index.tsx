@@ -7,7 +7,7 @@ import { Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 import React,{Component} from 'react';
 import { Components } from 'antd/lib/date-picker/generatePicker';
-
+import moment from 'moment';
 interface DataType {
   // buyer: Principal;
   // seller: Principal;
@@ -16,7 +16,7 @@ interface DataType {
   amount: Number;
   price: Number;
   sum: Number;
-  dealTime: Number;
+  dealTime: string;
 }
 
 const columns: ColumnsType<DataType> = [
@@ -87,7 +87,7 @@ console.log(data);
         amount:Number(item.amount),
         price:Number(item.price),
         sum:Number(item.sum),
-        dealTime:Number(item.dealTime)
+        dealTime:(moment(Number(item.dealTime)/1000000).format("YYYY-MM-DD HH:mm:ss")),
       };
       elements.push(trans)
     });

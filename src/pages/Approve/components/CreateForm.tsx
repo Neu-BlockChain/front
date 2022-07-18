@@ -17,7 +17,7 @@ interface result{
 
 
   // NNS Canister Id as an example
-  const nnsCanisterId = 'epr6w-qyaaa-aaaag-qalia-cai'
+  const nnsCanisterId = 'eiqyc-5aaaa-aaaag-qaliq-cai'
   const whitelist = [nnsCanisterId];
 
   // Initialise Agent, expects no return value

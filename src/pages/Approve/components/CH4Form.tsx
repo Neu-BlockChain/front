@@ -44,7 +44,7 @@ interface result{
       }),
     });
     return IDL.Service({
-      'mint' : IDL.Func([IDL.Principal, IDL.Nat], [TxReceipt], []),
+        'approve' : IDL.Func([IDL.Principal, IDL.Nat], [TxReceipt], []),
     });
   };
 
@@ -57,20 +57,21 @@ interface result{
 
 
 
-const CreateForm: React.FC<PropsWithChildren<CreateFormProps>> = (props) => {
+const CH4Form: React.FC<PropsWithChildren<CreateFormProps>> = (props) => {
+
+  const marketId = 'ngtm2-tyaaa-aaaan-qahpa-cai';
   const { modalVisible, onCancel } = props;
   const onFinish = async (values) =>{
-    const msg: result = await NNSUiActor.mint(Principal.from(values.principal),Number(values.amount));
+    const msg: result = await NNSUiActor.approve(Principal.from(marketId),Number(values.amount));
     
     props.onCancel();
     if(msg.Ok!=null){
-      message.info('发放成功');
+      message.info('授权成功');
     }else{
       console.error(msg.Err);
     }
     
     console.log(msg);
-    // const msg = await MarketApi.listSell(arg);
     
   };
   const onFinishFailed = () =>{};
@@ -79,7 +80,7 @@ const CreateForm: React.FC<PropsWithChildren<CreateFormProps>> = (props) => {
 
   return (
     <Modal
-      title="发放限额"
+      title="甲烷授权"
       width={420}
       visible={modalVisible}
       onCancel={() => onCancel()}
@@ -89,9 +90,6 @@ const CreateForm: React.FC<PropsWithChildren<CreateFormProps>> = (props) => {
       // cancelText="取消"
     >
       <Form onFinish={onFinish} onFinishFailed={onFinishFailed}>
-        <Form.Item label="principal" name="principal" rules={[{required :true , message:"请输入principal"}]}>
-          <Input />
-        </Form.Item>
         <Form.Item label="amount" name="amount" rules={[{required :true , message:"请输入amount"}]}>
           <Input />
         </Form.Item>
@@ -103,6 +101,6 @@ const CreateForm: React.FC<PropsWithChildren<CreateFormProps>> = (props) => {
   );
 };
 
-export default CreateForm;
+export default CH4Form;
 
 

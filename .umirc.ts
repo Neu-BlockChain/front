@@ -25,11 +25,6 @@ export default defineConfig({
       component: './Record',
     },
     {
-        name: ' CRUD 示例',
-        path: '/table',
-        component: './Table',
-    },
-    {
       name: ' 个人买方挂单',
       path: '/onesBuy',
       component: './OnesBuy',
@@ -55,9 +50,19 @@ export default defineConfig({
       component: './Chart',
     },
     {
-      name: ' 政府分发',
+      name: ' 政府分发与排放',
       path: '/govern',
       component: './Govern',
+    },
+    {
+      name: ' 代币授权',
+      path: '/approve',
+      component: './Approve',
+    },
+    {
+      name: ' 消耗饼图',
+      path: '/piechart',
+      component: './PieChart',
     },
     
   ],

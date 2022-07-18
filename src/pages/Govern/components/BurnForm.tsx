@@ -3,7 +3,7 @@ import React, { PropsWithChildren } from 'react';
 import MarketApi from '@/api/Market';
 import { Principal } from '@dfinity/principal';
 
-interface CreateFormProps {
+interface BurnFormProps {
   modalVisible: boolean;
   onCancel: () => void;
 }
@@ -44,7 +44,7 @@ interface result{
       }),
     });
     return IDL.Service({
-      'mint' : IDL.Func([IDL.Principal, IDL.Nat], [TxReceipt], []),
+        'burn' : IDL.Func([IDL.Principal, IDL.Nat], [TxReceipt], []),
     });
   };
 
@@ -57,14 +57,14 @@ interface result{
 
 
 
-const CreateForm: React.FC<PropsWithChildren<CreateFormProps>> = (props) => {
+const BurnForm: React.FC<PropsWithChildren<BurnFormProps>> = (props) => {
   const { modalVisible, onCancel } = props;
   const onFinish = async (values) =>{
-    const msg: result = await NNSUiActor.mint(Principal.from(values.principal),Number(values.amount));
+    const msg: result = await NNSUiActor.burn(Principal.from(values.principal),Number(values.amount));
     
     props.onCancel();
     if(msg.Ok!=null){
-      message.info('发放成功');
+      message.info('排放成功');
     }else{
       console.error(msg.Err);
     }
@@ -103,6 +103,6 @@ const CreateForm: React.FC<PropsWithChildren<CreateFormProps>> = (props) => {
   );
 };
 
-export default CreateForm;
+export default BurnForm;
 
 

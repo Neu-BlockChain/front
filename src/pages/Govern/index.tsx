@@ -9,26 +9,35 @@ import { Button, Modal, Form, Input} from 'antd';
 import { Space, Table, Tag } from 'antd';
 import { useState } from 'react';
 import CreateForm from './components/CreateForm';
+import BurnForm from './components/BurnForm';
 
 
 
 const Govern: React.FC<unknown> = () => {
-    const [ModalVisible, handleModalVisible] = useState<boolean>(true);
+    const [ModalVisible, handleModalVisible] = useState<boolean>(false);
+    const [BurnVisible, handleBurnVisible] = useState<boolean>(false);
 
     const { name } = useModel('global');
   return (
     <PageContainer ghost>
-    <div className={styles.container}>
-        <Guide name={trim(name)} />
-    </div>
+    <div>政府发放甲烷排放限额</div>
                     
-    <Button className={styles.button} type="primary"
+    <Button  type="primary"
             onClick={() => handleModalVisible(true)}>发放</Button>
     <CreateForm
         onCancel={() => handleModalVisible(false)}
         modalVisible={ModalVisible}
       >
       </CreateForm>
+    <div>政府执行甲烷排放记录</div>
+
+      <Button  type="primary"
+            onClick={() => handleBurnVisible(true)}>排放</Button>
+      <BurnForm
+        onCancel={() => handleBurnVisible(false)}
+        modalVisible={BurnVisible}
+      >
+      </BurnForm>
     </PageContainer>
     
     );

@@ -6,7 +6,7 @@ import { Button } from 'antd';
 import { Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 import { useState } from 'react';
-
+import moment from 'moment';
 // interface Status{
 //   open: number;
 //   done: number;
@@ -21,7 +21,7 @@ interface DataType {
   delta: number;
   price: number;
   // status: Status;
-  createAt: number;
+  createAt: string;
 }
 
 const columns: ColumnsType<DataType> = [
@@ -98,7 +98,7 @@ const Sell: React.FC<unknown> = () => {
         amount:Number(item.amount),
         price:Number(item.price),
         delta:Number(item.delta),
-        createAt:Number(item.createAt),
+        createAt:(moment(Number(item.createAt)/1000000).format("YYYY-MM-DD HH:mm:ss")),
       };
       elements.push(trans);
       
