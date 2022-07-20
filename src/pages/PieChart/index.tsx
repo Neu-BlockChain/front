@@ -76,6 +76,7 @@ const loadData = async()=>{
     const mintedBalance = await ch4Actor.minted_balanceof(principalId);
     setMintedBalance(Number(mintedBalance));
 
+
     const burnedBalance = await ch4Actor.burned_balanceof(principalId);
     setBurnedBalance(Number(burnedBalance));
 
@@ -89,6 +90,75 @@ const loadData = async()=>{
     setSellBalance(Number(sellBalance));
 }
 
+const getOption1 = () => {
+  const option: charts.EChartsOption = {
+    title: {
+      text: '甲烷来源图',
+      left: 'center'  
+    },
+     legend:{
+      data:['政府派发','用户购入'],
+      bottom:-5
+    },
+    series:[
+      {
+        type: 'pie',
+        label: {
+          formatter: `{d}%`,
+        },
+        data: [
+          {
+            name:'政府派发',
+            value: Number(mintedBalance),
+          },
+          {
+            name:'用户购入',
+            value: Number(buyBalance)
+          },
+          
+        
+        ]
+      }
+    ]
+  }
+  return option
+};
+const getOption2 = () => {
+  const option: charts.EChartsOption = {
+    title: {
+      text: '甲烷消耗图',
+      left: 'center'  
+    },
+     legend:{
+      data:['用户燃烧','用户卖出','当前余额'],
+      bottom:-5
+    },
+    series:[
+      {
+        type: 'pie',
+        label: {
+          formatter: `{d}%`,
+        },
+        data: [
+          {
+            name:'用户燃烧',
+            value: Number(burnedBalance),
+          },
+          {
+            name:'用户卖出',
+            value: Number(sellBalance),
+          },
+          {
+            name:'当前余额',
+            value: Number(balance),
+          }
+        
+        ]
+      }
+    ]
+  }
+  return option
+};
 loadData();
 console.log(mintedBalance);
 console.log(burnedBalance);
@@ -101,7 +171,16 @@ console.log(sellBalance);
         title: '交易图表',
       }}
     >
-      
+    <div>
+      <div style={{ width: 800,height:400,marginLeft:50}}>
+          <ReactEcharts option={getOption1()}/>
+        </div>
+    </div>  
+    <div>
+      <div style={{ width: 800,height:600,marginLeft:50}}>
+          <ReactEcharts option={getOption2()}/>
+        </div>
+    </div>
     </PageContainer>
 
     );

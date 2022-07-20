@@ -79,7 +79,7 @@ const BurnForm: React.FC<PropsWithChildren<BurnFormProps>> = (props) => {
 
   return (
     <Modal
-      title="发放限额"
+      title="排放执行"
       width={420}
       visible={modalVisible}
       onCancel={() => onCancel()}
