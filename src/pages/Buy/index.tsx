@@ -21,12 +21,12 @@ interface DataType {
 
   // NNS Canister Id as an example
   const nnsCanisterId = 'ngtm2-tyaaa-aaaan-qahpa-cai'
-  const whitelist = [nnsCanisterId];
+  // const whitelist = [nnsCanisterId];
 
-  // Initialise Agent, expects no return value
-  await window?.ic?.plug?.requestConnect({
-    whitelist,
-  });
+  // // Initialise Agent, expects no return value
+  // await window?.ic?.plug?.requestConnect({
+  //   whitelist,
+  // });
 
   // A partial Interface factory
   // for the NNS Canister UI

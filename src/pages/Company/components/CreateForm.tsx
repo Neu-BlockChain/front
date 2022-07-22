@@ -1,6 +1,6 @@
+import { Principal } from '@dfinity/principal';
 import { Modal, Form ,Input, Upload, Button, message} from 'antd';
 import React, { PropsWithChildren } from 'react';
-import MarketApi from '@/api/Market';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -10,9 +10,10 @@ interface CreateFormProps {
 }
 
 interface ListArgs {
-  amount: number;
-  price: number;
-  delta: number;
+  name: string;
+  desc: string;
+  webLink: string;
+  principal: Principal;
 }
 
 
@@ -29,14 +30,14 @@ interface ListArgs {
   // for the NNS Canister UI
   // Check the `plug authentication - nns` for more
   const nnsPartialInterfaceFactory = ({ IDL }) => {
-    const Result_1 = IDL.Variant({ 'ok' : IDL.Nat, 'err' : Error });
-    const ListArgs = IDL.Record({
-      'price' : IDL.Nat,
-      'amount' : IDL.Nat,
-      'delta' : IDL.Nat,
+    const Company = IDL.Record({
+      'principal' : IDL.Principal,
+      'desc' : IDL.Text,
+      'name' : IDL.Text,
+      'webLink' : IDL.Text,
     });
     return IDL.Service({
-      'listBuy' : IDL.Func([ListArgs], [Result_1], []),
+      'addCompany' : IDL.Func([Company], [IDL.Bool], []),
     });
   };
 
@@ -52,21 +53,22 @@ interface ListArgs {
 const CreateForm: React.FC<PropsWithChildren<CreateFormProps>> = (props) => {
   const { modalVisible, onCancel } = props;
   const onFinish = async (values) =>{
+    const principalId = await window.ic.plug.agent.getPrincipal();
     const arg: ListArgs= {
-          amount: Number(values.amount),
-          price: Number(values.price),
-          delta: Number(values.delta)
-          
+          name: String(values.name),
+          desc: String(values.desc),
+          webLink: String(values.webLink),
+          principal: principalId,
     };
     
-    const msg: result = await NNSUiActor.listBuy(arg);
+    const msg = await NNSUiActor.addCompany(arg);
     props.onCancel();
-    if(msg.ok!=null){
-      message.info('添加成功');
+    if(msg){
+      message.info('注册成功');
     }else{
-      message.info('添加失败'+msg.err);
+      message.info('注册失败'+msg.err);
     }
-    
+    console.log(msg);
     
     // const msg = await MarketApi.listSell(arg);
     
@@ -83,7 +85,7 @@ const CreateForm: React.FC<PropsWithChildren<CreateFormProps>> = (props) => {
 
   return (
     <Modal
-      title="添加挂单"
+      title="公司注册"
       width={420}
       visible={modalVisible}
       onCancel={() => onCancel()}
@@ -93,17 +95,17 @@ const CreateForm: React.FC<PropsWithChildren<CreateFormProps>> = (props) => {
       // cancelText="取消"
     >
       <Form onFinish={onFinish} onFinishFailed={onFinishFailed}>
-        <Form.Item label="amount" name="amount" rules={[{required :true , message:"请输入数量"}]}>
+        <Form.Item label="name" name="name" rules={[{required :true , message:"请输入公司名称"}]}>
           <Input />
         </Form.Item>
-        <Form.Item label="price" name="price" rules={[{required :true , message:"请输入价格"}]}>
+        <Form.Item label="desc" name="desc" rules={[{required :true , message:"请输入公司描述"}]}>
           <Input />
         </Form.Item>
-        <Form.Item label="delta" name="delta" rules={[{required :true , message:"请输入差价"}]}>
+        <Form.Item label="webLink" name="webLink" rules={[{required :true , message:"请输入公司链接"}]}>
           <Input />
         </Form.Item>
         <Form.Item>
-          <Button type='primary' htmlType='submit' onClick={notify}>添加</Button>
+          <Button type='primary' htmlType='submit' onClick={notify}>注册</Button>
           <ToastContainer
             position="top-center"
             autoClose={20000}

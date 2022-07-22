@@ -17,8 +17,11 @@ const HomePage: React.FC = () => {
 
 (async () => {
   // NNS Canister Id as an example
-  const nnsCanisterId = 'eiqyc-5aaaa-aaaag-qaliq-cai'
-  const whitelist = [nnsCanisterId];
+  const marketId = 'ngtm2-tyaaa-aaaan-qahpa-cai'
+  const ch4Id = 'epr6w-qyaaa-aaaag-qalia-cai'
+  const cnyId = 'eiqyc-5aaaa-aaaag-qaliq-cai'
+  const whitelist = [ch4Id,cnyId,marketId];
+
 
   // Initialise Agent, expects no return value
   await window?.ic?.plug?.requestConnect({
@@ -29,34 +32,26 @@ const HomePage: React.FC = () => {
   // for the NNS Canister UI
   // Check the `plug authentication - nns` for more
   const nnsPartialInterfaceFactory = ({ IDL }) => {
-    const BlockHeight = IDL.Nat64;
-    const Stats = IDL.Record({
-      'latest_transaction_block_height' : BlockHeight,
-      'seconds_since_last_ledger_sync' : IDL.Nat64,
-      'sub_accounts_count' : IDL.Nat64,
-      'hardware_wallet_accounts_count' : IDL.Nat64,
-      'accounts_count' : IDL.Nat64,
-      'earliest_transaction_block_height' : BlockHeight,
-      'transactions_count' : IDL.Nat64,
-      'block_height_synced_up_to' : IDL.Opt(IDL.Nat64),
-      'latest_transaction_timestamp_nanos' : IDL.Nat64,
-      'earliest_transaction_timestamp_nanos' : IDL.Nat64,
-    });
+    
     
     return IDL.Service({
       'getPrincipal' : IDL.Func([], [IDL.Text], ['query']),
+      
     });
   };
 
-  // Create an actor to interact with the NNS Canister
-  // we pass the NNS Canister id and the interface factory
-  const NNSUiActor = await window.ic.plug.createActor({
-    canisterId: nnsCanisterId,
+  const marketActor = await window.ic.plug.createActor({
+    canisterId: marketId,
     interfaceFactory: nnsPartialInterfaceFactory,
   });
 
+  // Create an actor to interact with the NNS Canister
+  // we pass the NNS Canister id and the interface factory
+  
+
   const principalId = await window.ic.plug.agent.getPrincipal();
   console.log(`Plug's user principal Id is ${principalId}`);
+
 
 })()
 

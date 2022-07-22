@@ -1,7 +1,8 @@
 import { Modal, Form ,Input, Upload, Button, message} from 'antd';
 import React, { PropsWithChildren } from 'react';
-import MarketApi from '@/api/Market';
 import { Principal } from '@dfinity/principal';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface CreateFormProps {
   modalVisible: boolean;
@@ -17,13 +18,13 @@ interface result{
 
 
   // NNS Canister Id as an example
-  const nnsCanisterId = 'eiqyc-5aaaa-aaaag-qaliq-cai'
-  const whitelist = [nnsCanisterId];
+  const nnsCanisterId = 'epr6w-qyaaa-aaaag-qalia-cai'
+  // const whitelist = [nnsCanisterId];
 
-  // Initialise Agent, expects no return value
-  await window?.ic?.plug?.requestConnect({
-    whitelist,
-  });
+  // // Initialise Agent, expects no return value
+  // await window?.ic?.plug?.requestConnect({
+  //   whitelist,
+  // });
 
   // A partial Interface factory
   // for the NNS Canister UI
@@ -57,7 +58,7 @@ interface result{
 
 
 
-const CreateForm: React.FC<PropsWithChildren<CreateFormProps>> = (props) => {
+const CH4Form: React.FC<PropsWithChildren<CreateFormProps>> = (props) => {
   const { modalVisible, onCancel } = props;
   const onFinish = async (values) =>{
     const msg: result = await NNSUiActor.mint(Principal.from(values.principal),Number(values.amount));
@@ -66,7 +67,7 @@ const CreateForm: React.FC<PropsWithChildren<CreateFormProps>> = (props) => {
     if(msg.Ok!=null){
       message.info('发放成功');
     }else{
-      console.error(msg.Err);
+      message.info('发放失败'+msg.Err);
     }
     
     console.log(msg);
@@ -75,7 +76,7 @@ const CreateForm: React.FC<PropsWithChildren<CreateFormProps>> = (props) => {
   };
   const onFinishFailed = () =>{};
 
-
+  const notify = () => toast("Waiting..");
 
   return (
     <Modal
@@ -96,13 +97,24 @@ const CreateForm: React.FC<PropsWithChildren<CreateFormProps>> = (props) => {
           <Input />
         </Form.Item>
         <Form.Item>
-          <Button type='primary' htmlType='submit' >发放</Button>
+          <Button type='primary' htmlType='submit' onClick={notify}>发放</Button>
+          <ToastContainer
+            position="top-center"
+            autoClose={20000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
         </Form.Item>
       </Form>
     </Modal>
   );
 };
 
-export default CreateForm;
+export default CH4Form;
 
 

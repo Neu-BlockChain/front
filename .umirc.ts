@@ -7,7 +7,7 @@ export default defineConfig({
   initialState: {},
   request: {},
   layout: {
-    title: '@umijs/max',
+    title: '链上碳排放交易系统',
   },
   routes: [
     {
@@ -18,6 +18,11 @@ export default defineConfig({
       name: '首页',
       path: '/home',
       component: './Home',
+    },
+    {
+      name: '公司信息',
+      path: '/Company',
+      component: './company',
     },
     {
       name: '交易记录',
@@ -50,11 +55,6 @@ export default defineConfig({
       component: './Chart',
     },
     {
-      name: ' 政府分发与排放',
-      path: '/govern',
-      component: './Govern',
-    },
-    {
       name: ' 代币授权',
       path: '/approve',
       component: './Approve',
@@ -63,6 +63,16 @@ export default defineConfig({
       name: ' 消耗饼图',
       path: '/piechart',
       component: './PieChart',
+    },
+    {
+      name: ' 政府分发与排放',
+      path: '/govern',
+      component: './Govern',
+    },
+    {
+      name: ' 公司列表',
+      path: '/companylist',
+      component: './CompanyList',
     },
     
   ],

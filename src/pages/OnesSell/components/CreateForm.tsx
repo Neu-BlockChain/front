@@ -1,6 +1,8 @@
 import { Modal, Form ,Input, Upload, Button, message} from 'antd';
 import React, { PropsWithChildren } from 'react';
 import MarketApi from '@/api/Market';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface CreateFormProps {
   modalVisible: boolean;
@@ -16,12 +18,12 @@ interface ListArgs {
 
   // NNS Canister Id as an example
   const nnsCanisterId = 'ngtm2-tyaaa-aaaan-qahpa-cai'
-  const whitelist = [nnsCanisterId];
+  // const whitelist = [nnsCanisterId];
 
-  // Initialise Agent, expects no return value
-  await window?.ic?.plug?.requestConnect({
-    whitelist,
-  });
+  // // Initialise Agent, expects no return value
+  // await window?.ic?.plug?.requestConnect({
+  //   whitelist,
+  // });
 
   // A partial Interface factory
   // for the NNS Canister UI
@@ -60,7 +62,7 @@ const CreateForm: React.FC<PropsWithChildren<CreateFormProps>> = (props) => {
     if(msg.ok!=null){
       message.info('添加成功');
     }else{
-      console.error(msg.err);
+      message.info('添加失败'+msg.err);
     }
     
     console.log(msg);
@@ -68,6 +70,8 @@ const CreateForm: React.FC<PropsWithChildren<CreateFormProps>> = (props) => {
     
   };
   const onFinishFailed = () =>{};
+
+  const notify = () => toast("Waiting..");
 
   interface result{
     ok: number;
@@ -96,7 +100,18 @@ const CreateForm: React.FC<PropsWithChildren<CreateFormProps>> = (props) => {
           <Input />
         </Form.Item>
         <Form.Item>
-          <Button type='primary' htmlType='submit' >添加</Button>
+          <Button type='primary' htmlType='submit' onClick={notify}>添加</Button>
+          <ToastContainer
+            position="top-center"
+            autoClose={20000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
         </Form.Item>
       </Form>
     </Modal>

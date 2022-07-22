@@ -12,13 +12,14 @@ import moment from 'moment';
 import { Alert } from 'antd';
 
     // NNS Canister Id as an example
-    const nnsCanisterId = 'ngtm2-tyaaa-aaaan-qahpa-cai'
-    const whitelist = [nnsCanisterId];
+    const marketId = 'ngtm2-tyaaa-aaaan-qahpa-cai'
+    const ch4Id = 'epr6w-qyaaa-aaaag-qalia-cai'
+    // const whitelist = [nnsCanisterId];
   
-    // Initialise Agent, expects no return value
-    await window?.ic?.plug?.requestConnect({
-      whitelist,
-    });
+    // // Initialise Agent, expects no return value
+    // await window?.ic?.plug?.requestConnect({
+    //   whitelist,
+    // });
   
     // A partial Interface factory
     // for the NNS Canister UI
@@ -48,13 +49,19 @@ import { Alert } from 'antd';
           ['query'],
         ),
         'warning' : IDL.Func([], [IDL.Text], []),
+        'balanceOf' : IDL.Func([IDL.Principal], [IDL.Nat], ['query']),
       });
     };
   
     // Create an actor to interact with the NNS Canister
     // we pass the NNS Canister id and the interface factory
-    const NNSUiActor = await window.ic.plug.createActor({
-      canisterId: nnsCanisterId,
+    const marketActor = await window.ic.plug.createActor({
+      canisterId: marketId,
+      interfaceFactory: nnsPartialInterfaceFactory,
+    });
+
+    const ch4Actor = await window.ic.plug.createActor({
+      canisterId: ch4Id,
       interfaceFactory: nnsPartialInterfaceFactory,
     });
 
@@ -95,19 +102,25 @@ import { Alert } from 'antd';
 
 const OnesSell: React.FC<unknown> = () => {
     const [dataSource,setDataSource] = useState<Array<DataType>>([]);
-    const [msg,setMsg] = useState();
+    const [msg,setMsg] = useState<string>();
 
 
     const loadMsg = async()=>{
-      const m = await NNSUiActor.warning();
-      setMsg(m);
+      const principalId = await window.ic.plug.agent.getPrincipal();
+      const balance = await ch4Actor.balanceOf(principalId);
+      if(Number(balance)>10){
+        setMsg("余额充足，当前甲烷余额为"+balance);
+      }else{
+        setMsg("余额不足，当前甲烷余额为"+balance);
+      }
+      
     }
 
     // 删除挂单
     const handleDelete = async(id)=>{
       
       const arg: cancelArgs = {index: Number(id)};
-      const msg : result= await NNSUiActor.cancelSell(arg);
+      const msg : result= await marketActor.cancelSell(arg);
       if(msg.ok!=null){
         message.info("删除成功");
       }else{
@@ -124,7 +137,7 @@ const OnesSell: React.FC<unknown> = () => {
 
 const loadData = async()=>{
   const principalId = await window.ic.plug.agent.getPrincipal();
-  const data = await NNSUiActor.getSomebodySellList(principalId);
+  const data = await marketActor.getSomebodySellList(principalId);
   const elements: DataType[]= [];
   //处理数组
   data.forEach((item)=>{
@@ -137,7 +150,7 @@ const loadData = async()=>{
     elements.push(trans);
   });
   setDataSource(elements);
-  
+
 }
 
 //获取要修改的数据

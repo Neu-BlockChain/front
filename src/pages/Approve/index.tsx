@@ -7,7 +7,7 @@ import type { ColumnsType } from 'antd/lib/table';
 import { useState } from 'react';
 import CH4Form from './components/CH4Form';
 import CNYForm from './components/CNYForm';
-import CreateForm from './components/CreateForm';
+
 
 interface DataType {
   name: string;
@@ -18,12 +18,12 @@ interface DataType {
   // NNS Canister Id as an example
   const ch4Id = 'epr6w-qyaaa-aaaag-qalia-cai'
   const cnyId = 'eiqyc-5aaaa-aaaag-qaliq-cai'
-  const whitelist = [ch4Id,cnyId];
+  // const whitelist = [ch4Id,cnyId];
 
-  // Initialise Agent, expects no return value
-  await window?.ic?.plug?.requestConnect({
-    whitelist,
-  });
+  // // Initialise Agent, expects no return value
+  // await window?.ic?.plug?.requestConnect({
+  //   whitelist,
+  // });
 
   // A partial Interface factory
   // for the NNS Canister UI
@@ -142,7 +142,6 @@ const Approve: React.FC<unknown> = () => {
 
   const [ch4Visible, handleCH4Visible] = useState<boolean>(false);
   const [cnyVisible, handleCNYVisible] = useState<boolean>(false);
-  const [ModalVisible, handleModalVisible] = useState<boolean>(false);
 
   const [ch4Source,setCH4Source]=useState<Array<DataType>>([]);
   const [cnySource,setCNYSource]=useState<Array<DataType>>([]);
@@ -202,14 +201,7 @@ const Approve: React.FC<unknown> = () => {
         modalVisible={cnyVisible}
       >
       </CNYForm>
-      <div>为自己账户派发人民币</div>
-      <Button  type="primary"
-            onClick={() => handleModalVisible(true)}>发放</Button>
-      <CreateForm
-        onCancel={() => handleModalVisible(false)}
-        modalVisible={ModalVisible}
-      >
-      </CreateForm>
+
     </PageContainer>
     
 

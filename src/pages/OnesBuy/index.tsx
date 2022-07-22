@@ -11,14 +11,16 @@ import moment from 'moment';
 import { Alert } from 'antd';
 
 
+
     // NNS Canister Id as an example
     const nnsCanisterId = 'ngtm2-tyaaa-aaaan-qahpa-cai'
-    const whitelist = [nnsCanisterId];
+    const ch4Id = 'epr6w-qyaaa-aaaag-qalia-cai'
+    // const whitelist = [nnsCanisterId];
   
-    // Initialise Agent, expects no return value
-    await window?.ic?.plug?.requestConnect({
-      whitelist,
-    });
+    // // Initialise Agent, expects no return value
+    // await window?.ic?.plug?.requestConnect({
+    //   whitelist,
+    // });
   
     // A partial Interface factory
     // for the NNS Canister UI
@@ -48,6 +50,7 @@ import { Alert } from 'antd';
           ['query'],
         ),
         'warning' : IDL.Func([], [IDL.Text], []),
+        'balanceOf' : IDL.Func([IDL.Principal], [IDL.Nat], ['query']),
       });
     };
   
@@ -55,6 +58,10 @@ import { Alert } from 'antd';
     // we pass the NNS Canister id and the interface factory
     const NNSUiActor = await window.ic.plug.createActor({
       canisterId: nnsCanisterId,
+      interfaceFactory: nnsPartialInterfaceFactory,
+    });
+    const ch4Actor = await window.ic.plug.createActor({
+      canisterId: ch4Id,
       interfaceFactory: nnsPartialInterfaceFactory,
     });
 
@@ -93,13 +100,19 @@ import { Alert } from 'antd';
 
 const OnesBuy: React.FC<unknown> = () => {
   const [dataSource,setDataSource] = useState<Array<DataType>>([]);
-  const [msg,setMsg] = useState();
+  const [msg,setMsg] = useState<string>();
 
 
-    const loadMsg = async()=>{
-      const m = await NNSUiActor.warning();
-      setMsg(m);
+  const loadMsg = async()=>{
+    const principalId = await window.ic.plug.agent.getPrincipal();
+    const balance = await ch4Actor.balanceOf(principalId);
+    if(Number(balance)>10){
+      setMsg("余额充足，当前甲烷余额为"+balance);
+    }else{
+      setMsg("余额不足，当前甲烷余额为"+balance);
     }
+    
+  }
   
     // 删除挂单
     const handleDelete = async(id)=>{
@@ -169,6 +182,7 @@ const showUpdateDialog = (flag: boolean) =>{
   }
 }
 
+
 const columns: ProDescriptionsItemProps[] = [
   {
     title: '挂单ID',
@@ -217,7 +231,7 @@ const columns: ProDescriptionsItemProps[] = [
         <Popconfirm title='确定要删除该挂单？' okText="确认" cancelText="取消" 
         onConfirm={()=>{handleDelete(record.index)}}
         >
-          <Button type='primary'>删除</Button>
+          <Button type='primary' >删除</Button>
         </Popconfirm>
         
       </>

@@ -14,12 +14,12 @@ declare const window: Window & { ic: any }
 // NNS Canister Id as an example
 const ch4CanisterId = 'epr6w-qyaaa-aaaag-qalia-cai'
 const marketCanisterId = 'ngtm2-tyaaa-aaaan-qahpa-cai'
-const whitelist = [ch4CanisterId,marketCanisterId];
+// const whitelist = [ch4CanisterId,marketCanisterId];
 
-// Initialise Agent, expects no return value
-await window?.ic?.plug?.requestConnect({
-  whitelist,
-});
+// // Initialise Agent, expects no return value
+// await window?.ic?.plug?.requestConnect({
+//   whitelist,
+// });
 
 // A partial Interface factory
 // for the NNS Canister UI
@@ -113,9 +113,8 @@ const getOption1 = () => {
           },
           {
             name:'用户购入',
-            value: Number(buyBalance)
-          },
-          
+            value:Number(buyBalance)
+          }
         
         ]
       }
@@ -142,15 +141,15 @@ const getOption2 = () => {
         data: [
           {
             name:'用户燃烧',
-            value: Number(burnedBalance),
+            value: Number(burnedBalance)
           },
           {
             name:'用户卖出',
-            value: Number(sellBalance),
+            value:Number(sellBalance)
           },
           {
             name:'当前余额',
-            value: Number(balance),
+            value:Number(balance)
           }
         
         ]
@@ -168,17 +167,18 @@ console.log(sellBalance);
   return (
     <PageContainer
       header={{
-        title: '交易图表',
+        title: '个人甲烷消耗',
       }}
     >
     <div>
-      <div style={{ width: 800,height:400,marginLeft:50}}>
-          <ReactEcharts option={getOption1()}/>
+      <div style={{ width:300,height:400,marginTop:100,marginLeft:100}}>
+          <ReactEcharts option={getOption1()}/>   
+          
         </div>
-    </div>  
+    </div>       
     <div>
-      <div style={{ width: 800,height:600,marginLeft:50}}>
-          <ReactEcharts option={getOption2()}/>
+      <div style={{ width:1500,height:400,marginTop:-400,marginRight:100}}>
+           <ReactEcharts option={getOption2()}/>  
         </div>
     </div>
     </PageContainer>
