@@ -19,9 +19,9 @@ const Govern: React.FC<unknown> = () => {
 
   return (
     <PageContainer ghost>
-    <div  style={{height:120,fontSize:30,marginTop:30}}>政府发放甲烷排放限额
+    <div  style={{height:40,fontSize:20,marginTop:30}}>政府发放甲烷排放限额
                     
-    <Button  type="primary" size="large" style={{width:120,height:50,fontSize:25,marginLeft:120}}
+    <Button  type="primary" size="large" style={{width:80,height:40,fontSize:20,marginLeft:120}}
             onClick={() => handleModalVisible(true)}>发放</Button>
     <CH4Form
         onCancel={() => handleModalVisible(false)}
@@ -30,9 +30,9 @@ const Govern: React.FC<unknown> = () => {
       </CH4Form>
       </div>
       <line style={{fontSize:30}}>----------------------------</line>
-      <div  style={{height:120,fontSize:30,marginTop:30}}>政府执行甲烷排放
+      <div  style={{height:40,fontSize:20,marginTop:30}}>政府执行甲烷排放
 
-      <Button  type="primary" size="large" style={{width:120,height:50,fontSize:25,marginLeft:180}}
+      <Button  type="primary" size="large" style={{width:80,height:40,fontSize:20,marginLeft:160}}
             onClick={() => handleBurnVisible(true)}>排放</Button>
       <BurnForm
         onCancel={() => handleBurnVisible(false)}
@@ -41,8 +41,8 @@ const Govern: React.FC<unknown> = () => {
       </BurnForm>
       </div>
       <line style={{fontSize:30}}>----------------------------</line>
-      <div  style={{height:120,fontSize:30,marginTop:30}}>政府发放人民币
-      <Button  type="primary" size="large" style={{width:120,height:50,fontSize:25,marginLeft:220}}
+      <div  style={{height:40,fontSize:20,marginTop:30}}>政府发放人民币
+      <Button  type="primary" size="large" style={{width:80,height:40,fontSize:20,marginLeft:180}}
             onClick={() => handleVisible(true)}>发放</Button>
       <CreateForm
         onCancel={() => handleVisible(false)}

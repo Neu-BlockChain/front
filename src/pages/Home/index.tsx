@@ -4,13 +4,27 @@ import { PageContainer } from '@ant-design/pro-components';
 import { useModel } from '@umijs/max';
 import styles from './index.less';
 import TestApi from '@/api/Test';
+import ch4 from './img/ch4.jpg';
+import logo from './img/logo.png';
 const HomePage: React.FC = () => {
   const { name } = useModel('global');
   return (
     <PageContainer ghost>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <img  align-content="center" src={logo}></img>
+      </div>
+
+
       <div className={styles.container}>
         <Guide name={trim(name)} />
       </div>
+
+
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <img width="500" height="400" align-content="center" src={ch4}></img>
+      </div>
+
+      {/* <img width="100" height="100" align-content="center" src={ch4}></img> */}
     </PageContainer>
   );
 };

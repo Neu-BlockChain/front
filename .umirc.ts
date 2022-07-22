@@ -7,7 +7,7 @@ export default defineConfig({
   initialState: {},
   request: {},
   layout: {
-    title: '链上碳排放交易系统',
+    title: '甲烷排放额交易区块链平台',
   },
   routes: [
     {

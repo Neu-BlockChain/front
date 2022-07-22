@@ -11,6 +11,7 @@ import moment from 'moment';
 interface DataType {
 
   principal: string;
+  name: string;
   initAmount: number;
   burn: number;
   amount: number;
@@ -32,7 +33,13 @@ interface DataType {
   // for the NNS Canister UI
   // Check the `plug authentication - nns` for more
   const nnsPartialInterfaceFactory = ({ IDL }) => {
-
+    const Company = IDL.Record({
+      'principal' : IDL.Principal,
+      'desc' : IDL.Text,
+      'name' : IDL.Text,
+      'webLink' : IDL.Text,
+    });
+    const Result_2 = IDL.Variant({ 'ok' : Company, 'err' : IDL.Null });
     return IDL.Service({
         'getAllCompanyPr' : IDL.Func([], [IDL.Vec(IDL.Principal)], ['query']),
         'balanceOf' : IDL.Func([IDL.Principal], [IDL.Nat], ['query']),
@@ -40,6 +47,7 @@ interface DataType {
         'toSell_balanceof' : IDL.Func([IDL.Principal], [IDL.Nat], ['query']),
         'minted_balanceof' : IDL.Func([IDL.Principal], [IDL.Nat],['query']),
         'burned_balanceof': IDL.Func([IDL.Principal], [IDL.Nat],['query']),
+        'getCompanyInfo' : IDL.Func([IDL.Principal], [Result_2], ['query']),
     });
   };
 
@@ -60,6 +68,11 @@ const columns: ColumnsType<DataType> = [
     title: '企业principal',
     dataIndex: 'principal',
     key:'principal',
+  },
+  {
+    title: '企业名称',
+    dataIndex: 'name',
+    key:'name',
   },
   {
     title: '政府发放额',
@@ -101,6 +114,8 @@ const CompanyList: React.FC<unknown> = () => {
     //处理数组
     data.length
     for(var i=0;i<data.length;i++){
+        const d = await marketActor.getCompanyInfo(data[i]);
+        const name = d.ok.name;
         const principal = String(`${data[i]}`);
         const initAmount = await ch4Actor.minted_balanceof(data[i]);
         const burn = await ch4Actor.burned_balanceof(data[i]);
@@ -110,6 +125,7 @@ const CompanyList: React.FC<unknown> = () => {
 
       const trans: DataType = {
         principal: principal,
+        name: name,
         initAmount: Number(initAmount),
         burn: Number(burn),
         amount: Number(amount),

@@ -13,7 +13,7 @@ const Guide: React.FC<Props> = (props) => {
     <Layout>
       <Row>
         <Typography.Title level={3} className={styles.title}>
-          链上ch4排放交易系统
+        中国科学院——甲烷排放额交易区块链平台
         </Typography.Title>
       </Row>
     </Layout>
